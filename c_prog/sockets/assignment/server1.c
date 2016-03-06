@@ -1,0 +1,62 @@
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+int main(){
+
+	int server_sockfd,client_sockfd;
+	int server_len,client_len;
+	struct sockaddr_un server_address;
+	struct sockaddr_un client_address;
+
+	//remove any old socket and create a new unnames socket
+	unlink("server_socket");
+	server_sockfd=socket(AF_UNIX,SOCK_STREAM,0);
+
+	//naming the socket
+	server_address.sun_family=AF_UNIX;
+	strcpy(server_address.sun_path,"server_socket");
+	server_len=sizeof(server_address);
+	bind(server_sockfd,(struct sockaddr *)&server_address,server_len);
+
+	//create a connect queue and wait for clients
+	listen(server_sockfd,5);
+	while(1){
+		struct data
+			{
+				int values[2];
+				int result;
+				char operate;
+			}input;	
+	
+
+		printf("server waiting\n");
+	
+
+	//accept connection
+
+	client_len=sizeof(client_address);
+	client_sockfd=accept(server_sockfd,(struct sockaddr *)&client_address,&client_len);
+	
+	//read and write to client
+	read (client_sockfd,&input,sizeof(input));
+	
+		if(input.operate=='+'){
+		input.result=input.values[0]+input.values[1];
+		printf("the computation of %d+%d= %d\n",input.values[0],input.values[1],input.result );
+		}
+		else if(input.operate=='-')
+			input.result=input.values[0]-input.values[1];
+		else if(input.operate=='*')
+			input.result=input.values[0]*input.values[1];
+		else
+			input.result=input.values[0]/input.values[1];
+		
+		write(client_sockfd,&input,sizeof(input));
+		close(client_sockfd);
+	}
+
+}

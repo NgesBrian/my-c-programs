@@ -1,0 +1,7 @@
+typedef struct treeNode TreeNode;
+
+#ifndef SHAKE
+#define SHAKE
+void NewNode( TreeNode **root, char *word);
+void InOrderTraversal( TreeNode *rootNode);
+#endif

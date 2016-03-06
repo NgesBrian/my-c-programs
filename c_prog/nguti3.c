@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+  int factorial(int number);
+
+int main(int argc, char const *argv[])
+{
+    int  fac;
+	int num;
+	printf("input a number to compute the factorial\n");
+	scanf("%d",&num);
+
+	fac=factorial(num);
+
+	printf("the factorial of %d is %ld\n",num ,fac);
+
+	return 0;
+}
+
+  int factorial(int number){
+	int val;
+	int i;
+	val=number;
+	if (number==0 || number==1){
+		val=1;
+		return val;
+	}
+		for(i=number;i>2;i--){
+				val*=i-1;
+		}
+    return val;
+}

@@ -1,0 +1,55 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "shake.h"
+
+typedef extern struct treeNode TreeNode;
+
+//Creates a tree node structure
+struct treeNode{
+	char word[50];
+	int count=1;
+    TreeNode *left;
+	TreeNode *right;
+};
+
+//this functions adds a node to the tree
+void NewNode( TreeNode **root, char *word){
+
+//if no root exist then add one and make the frequency one
+	if( *root == NULL){
+		*root = malloc( sizeof(TreeNode));
+		int i = 0;
+
+		//Transfers word to (*root)->word
+		for( i = 0; word[i] != '\0'; i++)
+			(*root)->word[i] = word[i];
+		
+		(*root).count = 1;
+		(*root).left = (*root).rightNode = NULL;
+	}
+//if root exist check wether the word is bigger or smaller than the word then add it to the right r left of the node intravesel respectively
+	else if( strcmp((*root)->word, word) > 0)
+		NewNode( &(*root)->left, word);
+	else if( strcmp( (*root)->word, word) < 0)
+		NewNode( &(*root)->right, word);
+	else
+		(*root)->count++;
+}
+//This function traverses the tree inorderly and prints the tree to a file and also to the screen
+void InOrderTraversal( TreeNode *rootNode){
+	if( rootNode != NULL){
+		FILE *fp;
+		fp = fopen("shakespeare-word","a");
+
+		inOrderTraversal(rootNode->left);
+		fprintf(fp,"\t%-20s\t%-10d\n", rootNode->word, rootNode->count );
+		printf("\t%-20s\t%-10d\n", rootNode->word, rootNode->count );
+		inOrderTraversal( rootNode->right);
+		fclose(fp);
+		free;
+	}
+}
+

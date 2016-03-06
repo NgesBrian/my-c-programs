@@ -1,0 +1,41 @@
+/*This program is written by Njungle Nges Brian MAtricule Number:FE14A169 as an assignment 
+of system programming given by Dr Nguti
+on November  29th 2015
+
+This program counts alll the words inputed by file or by text and prints the frequency of each word with the word.
+This is printed in the file and in the terminal.
+An example is all the works of Shakespere.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "shake.h"
+
+//This function adds nodes to the tree
+
+typedef struct treeNode TreeNode;
+
+int main(void){
+	
+	//This declaration initialises the output file discarding all its content if it exist
+	FILE *fp;	
+	fp = fopen("shakespeare-word","a");
+	TreeNode *root;
+	char word[50];
+	int ch;
+
+	root = NULL;
+	//Reads input and store in binary tree until end of file is read
+	while( ( ch = getc(stdin)) != EOF ){
+		ungetc(ch, stdin);
+		scanf("%s",word);
+		NewNode( &root, word);
+	}
+
+	InOrderTraversal(root);
+
+	fclose(fp);
+	free;
+	return 0;
+}
